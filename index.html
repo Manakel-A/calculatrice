@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calculatrice</title>
+
+<style>
+
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#1e1e2f;
+    font-family:Arial;
+}
+
+.calculatrice{
+    width:320px;
+    background:#2c2c3e;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+.ecran{
+    width:100%;
+    height:60px;
+    margin-bottom:15px;
+    font-size:24px;
+    text-align:right;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+}
+
+.boutons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+button{
+    padding:20px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.operateur{
+    background:#19c37d;
+    color:white;
+}
+
+.equal{
+    background:#00b894;
+    color:white;
+    grid-column:span 2;
+}
+
+.clear{
+    background:red;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="calculatrice">
+
+    <input type="text" id="ecran" class="ecran" disabled>
+
+    <div class="boutons">
+
+        <button onclick="ajouter('7')">7</button>
+        <button onclick="ajouter('8')">8</button>
+        <button onclick="ajouter('9')">9</button>
+        <button class="operateur" onclick="ajouter('/')">/</button>
+
+        <button onclick="ajouter('4')">4</button>
+        <button onclick="ajouter('5')">5</button>
+        <button onclick="ajouter('6')">6</button>
+        <button class="operateur" onclick="ajouter('*')">*</button>
+
+        <button onclick="ajouter('1')">1</button>
+        <button onclick="ajouter('2')">2</button>
+        <button onclick="ajouter('3')">3</button>
+        <button class="operateur" onclick="ajouter('-')">-</button>
+
+        <button onclick="ajouter('0')">0</button>
+        <button onclick="ajouter('.')">.</button>
+        <button class="operateur" onclick="ajouter('+')">+</button>
+        <button onclick="supprimer()">⌫</button>
+
+        <button class="clear" onclick="effacer()">C</button>
+        <button class="equal" onclick="calculer()">=</button>
+
+    </div>
+
+</div>
+
+<script>
+
+let ecran = document.getElementById("ecran");
+
+function ajouter(val){
+    ecran.value += val;
+}
+
+function effacer(){
+    ecran.value = "";
+}
+
+function supprimer(){
+    ecran.value = ecran.value.slice(0, -1);
+}
+
+function calculer(){
+    try{
+        ecran.value = eval(ecran.value);
+    }catch{
+        ecran.value = "Erreur";
+    }
+}
+
+</script>
+
+</body>
+
+</html>
