@@ -187,6 +187,35 @@ function calculer(){
 
 }
 
+document.addEventListener("keydown", function(event){
+
+    let touche = event.key;
+
+    if(
+        (touche >= "0" && touche <= "9") ||
+        touche == "+" ||
+        touche == "-" ||
+        touche == "*" ||
+        touche == "/" ||
+        touche == "."
+    ){
+        ajouter(touche);
+    }
+
+    else if(touche == "Enter"){
+        calculer();
+    }
+
+    else if(touche == "Backspace"){
+        supprimer();
+    }
+
+    else if(touche == "Delete"){
+        effacer();
+    }
+
+});
+
 </script>
 
 </body>
