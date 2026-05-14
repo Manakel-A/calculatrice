@@ -1,15 +1,11 @@
+//Ma Calculatrice
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Calculatrice</title>
-
 <style>
-
 body{
     margin:0;
     height:100vh;
@@ -152,45 +148,27 @@ let historique = document.getElementById("listeHistorique");
 function ajouter(val){
     ecran.value += val;
 }
-
 function effacer(){
     ecran.value = "";
 }
-
 function supprimer(){
     ecran.value = ecran.value.slice(0, -1);
 }
-
 function calculer(){
-
     try{
-
         let expression = ecran.value;
-
         let resultat = eval(expression);
-
         ecran.value = resultat;
-
         let ligne = document.createElement("div");
-
         ligne.classList.add("ligne");
-
         ligne.innerHTML = expression + " = " + resultat;
-
         historique.prepend(ligne);
-
     }catch{
-
         ecran.value = "Erreur";
-
     }
-
 }
-
 document.addEventListener("keydown", function(event){
-
     let touche = event.key;
-
     if(
         (touche >= "0" && touche <= "9") ||
         touche == "+" ||
@@ -201,23 +179,16 @@ document.addEventListener("keydown", function(event){
     ){
         ajouter(touche);
     }
-
     else if(touche == "Enter"){
         calculer();
     }
-
     else if(touche == "Backspace"){
         supprimer();
     }
-
     else if(touche == "Delete"){
         effacer();
     }
-
 });
-
 </script>
-
 </body>
-
 </html>
