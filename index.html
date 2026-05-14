@@ -1,11 +1,12 @@
-//Ma Calculatrice
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Calculatrice</title>
+
 <style>
+
 body{
     margin:0;
     height:100vh;
@@ -14,6 +15,11 @@ body{
     align-items:center;
     background:#1e1e2f;
     font-family:Arial;
+    transition:0.3s;
+}
+
+body.clair{
+    background:#f4f4f4;
 }
 
 .calculatrice{
@@ -22,6 +28,11 @@ body{
     padding:20px;
     border-radius:15px;
     box-shadow:0 0 20px rgba(0,0,0,0.5);
+    transition:0.3s;
+}
+
+body.clair .calculatrice{
+    background:white;
 }
 
 .ecran{
@@ -34,6 +45,11 @@ body{
     border:none;
     border-radius:10px;
     box-sizing:border-box;
+}
+
+body.clair .ecran{
+    background:#eeeeee;
+    color:black;
 }
 
 .boutons{
@@ -72,6 +88,13 @@ button:hover{
     color:white;
 }
 
+.mode{
+    width:100%;
+    margin-bottom:15px;
+    background:#6c5ce7;
+    color:white;
+}
+
 .historique{
     margin-top:20px;
     background:#1e1e2f;
@@ -80,6 +103,12 @@ button:hover{
     max-height:150px;
     overflow-y:auto;
     color:white;
+    transition:0.3s;
+}
+
+body.clair .historique{
+    background:#eeeeee;
+    color:black;
 }
 
 .historique h3{
@@ -93,6 +122,10 @@ button:hover{
     font-size:16px;
 }
 
+body.clair .ligne{
+    border-bottom:1px solid #bbb;
+}
+
 </style>
 
 </head>
@@ -100,6 +133,10 @@ button:hover{
 <body>
 
 <div class="calculatrice">
+
+    <button class="mode" onclick="changerMode()">
+        Mode Clair / Sombre
+    </button>
 
     <input type="text" id="ecran" class="ecran" disabled>
 
@@ -148,27 +185,49 @@ let historique = document.getElementById("listeHistorique");
 function ajouter(val){
     ecran.value += val;
 }
+
 function effacer(){
     ecran.value = "";
 }
+
 function supprimer(){
     ecran.value = ecran.value.slice(0, -1);
 }
+
 function calculer(){
+
     try{
+
         let expression = ecran.value;
+
         let resultat = eval(expression);
+
         ecran.value = resultat;
+
         let ligne = document.createElement("div");
+
         ligne.classList.add("ligne");
+
         ligne.innerHTML = expression + " = " + resultat;
+
         historique.prepend(ligne);
+
     }catch{
+
         ecran.value = "Erreur";
+
     }
+
 }
+
+function changerMode(){
+    document.body.classList.toggle("clair");
+}
+
 document.addEventListener("keydown", function(event){
+
     let touche = event.key;
+
     if(
         (touche >= "0" && touche <= "9") ||
         touche == "+" ||
@@ -179,16 +238,22 @@ document.addEventListener("keydown", function(event){
     ){
         ajouter(touche);
     }
+
     else if(touche == "Enter"){
         calculer();
     }
+
     else if(touche == "Backspace"){
         supprimer();
     }
+
     else if(touche == "Delete"){
         effacer();
     }
+
 });
+
 </script>
+
 </body>
 </html>
