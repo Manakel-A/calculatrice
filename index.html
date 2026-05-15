@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculatrice</title>
+<title>Calculatrice Scientifique</title>
 
 <style>
 
@@ -30,7 +30,7 @@ body.clair{
 
 .calculatrice{
     width:100%;
-    max-width:360px;
+    max-width:420px;
     background:#2c2c3e;
     padding:20px;
     border-radius:20px;
@@ -63,13 +63,13 @@ body.clair .ecran{
 
 .boutons{
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(5,1fr);
     gap:10px;
 }
 
 button{
-    padding:18px;
-    font-size:20px;
+    padding:16px;
+    font-size:18px;
     border:none;
     border-radius:12px;
     cursor:pointer;
@@ -108,6 +108,11 @@ button:active{
     color:white;
 }
 
+.science{
+    background:#fdcb6e;
+    color:black;
+}
+
 .historique{
     margin-top:20px;
     background:#1e1e2f;
@@ -142,8 +147,8 @@ body.clair .ligne{
 @media(max-width:500px){
 
     button{
-        padding:15px;
-        font-size:18px;
+        padding:13px;
+        font-size:16px;
     }
 
     .ecran{
@@ -167,28 +172,43 @@ body.clair .ligne{
     <input type="text" id="ecran" class="ecran" disabled>
 
     <div class="boutons">
-	<button class="operateur" onclick="pourcentage()">%</button>
-	<button class="operateur" onclick="racine()">√</button>
+
+        <!-- Scientifique -->
+        <button class="science" onclick="sinus()">sin</button>
+        <button class="science" onclick="cosinus()">cos</button>
+        <button class="science" onclick="tangente()">tan</button>
+        <button class="science" onclick="logarithme()">log</button>
+        <button class="science" onclick="puissance()">x²</button>
+
+        <button class="operateur" onclick="pourcentage()">%</button>
+        <button class="operateur" onclick="racine()">√</button>
+        <button class="science" onclick="ajouter('(')">(</button>
+        <button class="science" onclick="ajouter(')')">)</button>
+        <button class="science" onclick="factorielle()">x!</button>
 
         <button onclick="ajouter('7')">7</button>
         <button onclick="ajouter('8')">8</button>
         <button onclick="ajouter('9')">9</button>
         <button class="operateur" onclick="ajouter('/')">÷</button>
+        <button class="science" onclick="inverse()">1/x</button>
 
         <button onclick="ajouter('4')">4</button>
         <button onclick="ajouter('5')">5</button>
         <button onclick="ajouter('6')">6</button>
         <button class="operateur" onclick="ajouter('*')">×</button>
+        <button class="science" onclick="ajouter('3.14159265359')">π</button>
 
         <button onclick="ajouter('1')">1</button>
         <button onclick="ajouter('2')">2</button>
         <button onclick="ajouter('3')">3</button>
         <button class="operateur" onclick="ajouter('-')">−</button>
+        <button class="science" onclick="ajouter('2.718281828')">e</button>
 
         <button onclick="ajouter('0')">0</button>
         <button onclick="ajouter('.')">.</button>
         <button class="operateur" onclick="ajouter('+')">+</button>
         <button onclick="supprimer()">⌫</button>
+        <button class="science" onclick="cube()">x³</button>
 
         <button class="clear" onclick="effacer()">C</button>
         <button class="equal" onclick="calculer()">=</button>
@@ -217,7 +237,6 @@ function ajouter(val){
 
     let dernier = ecran.value.slice(-1);
 
-    // empêcher deux opérateurs à la suite
     if(
         operateurs.includes(dernier) &&
         operateurs.includes(val)
@@ -225,7 +244,6 @@ function ajouter(val){
         return;
     }
 
-    // empêcher plusieurs points dans un nombre
     if(val == "."){
 
         let parties = ecran.value.split(/[\+\-\*\/]/);
@@ -270,6 +288,7 @@ function pourcentage(){
     }
 
 }
+
 function racine(){
 
     try{
@@ -290,6 +309,234 @@ function racine(){
 
         ajouterHistorique(
             "√(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function sinus(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat = Math.sin(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "sin(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function cosinus(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat = Math.cos(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "cos(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function tangente(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat = Math.tan(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "tan(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function logarithme(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        if(valeur <= 0){
+            throw Error();
+        }
+
+        let resultat = Math.log10(valeur);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "log(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function puissance(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat = Math.pow(valeur, 2);
+
+        ajouterHistorique(
+            valeur + "²",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function cube(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat = Math.pow(valeur, 3);
+
+        ajouterHistorique(
+            valeur + "³",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function inverse(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        if(valeur == 0){
+            throw Error();
+        }
+
+        let resultat = 1 / valeur;
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "1/" + valeur,
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function factorielle(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        if(valeur < 0 || !Number.isInteger(valeur)){
+            throw Error();
+        }
+
+        let resultat = 1;
+
+        for(let i = 1; i <= valeur; i++){
+
+            resultat *= i;
+
+        }
+
+        ajouterHistorique(
+            valeur + "!",
             resultat
         );
 
@@ -329,7 +576,6 @@ function calculer(){
 
         let resultat = eval(expression);
 
-        // empêcher Infinity
         if(!isFinite(resultat)){
             throw Error();
         }
@@ -375,7 +621,9 @@ document.addEventListener("keydown", function(event){
     if(
         (touche >= "0" && touche <= "9") ||
         operateurs.includes(touche) ||
-        touche == "."
+        touche == "." ||
+        touche == "(" ||
+        touche == ")"
     ){
 
         ajouter(touche);
