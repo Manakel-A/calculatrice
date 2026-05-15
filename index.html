@@ -167,6 +167,8 @@ body.clair .ligne{
     <input type="text" id="ecran" class="ecran" disabled>
 
     <div class="boutons">
+	<button class="operateur" onclick="pourcentage()">%</button>
+	<button class="operateur" onclick="racine()">√</button>
 
         <button onclick="ajouter('7')">7</button>
         <button onclick="ajouter('8')">8</button>
@@ -237,6 +239,69 @@ function ajouter(val){
     }
 
     ecran.value += val;
+
+}
+
+function pourcentage(){
+
+    try{
+
+        if(ecran.value == ""){
+            return;
+        }
+
+        let valeur = eval(ecran.value);
+
+        let resultat = valeur / 100;
+
+        ajouterHistorique(
+            valeur + "%",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+function racine(){
+
+    try{
+
+        if(ecran.value == ""){
+            return;
+        }
+
+        let valeur = eval(ecran.value);
+
+        if(valeur < 0){
+            throw Error();
+        }
+
+        let resultat = Math.sqrt(valeur);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "√(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
 
 }
 
