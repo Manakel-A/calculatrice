@@ -3,9 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Calculatrice</title>
 
 <style>
+
+*{
+    box-sizing:border-box;
+}
 
 body{
     margin:0;
@@ -14,8 +19,9 @@ body{
     justify-content:center;
     align-items:center;
     background:#1e1e2f;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
     transition:0.3s;
+    padding:15px;
 }
 
 body.clair{
@@ -23,11 +29,12 @@ body.clair{
 }
 
 .calculatrice{
-    width:350px;
+    width:100%;
+    max-width:360px;
     background:#2c2c3e;
     padding:20px;
-    border-radius:15px;
-    box-shadow:0 0 20px rgba(0,0,0,0.5);
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(0,0,0,0.4);
     transition:0.3s;
 }
 
@@ -37,14 +44,16 @@ body.clair .calculatrice{
 
 .ecran{
     width:100%;
-    height:60px;
+    height:70px;
     margin-bottom:15px;
-    font-size:24px;
+    font-size:30px;
     text-align:right;
-    padding:10px;
+    padding:15px;
     border:none;
-    border-radius:10px;
-    box-sizing:border-box;
+    border-radius:12px;
+    outline:none;
+    background:#111827;
+    color:white;
 }
 
 body.clair .ecran{
@@ -59,17 +68,21 @@ body.clair .ecran{
 }
 
 button{
-    padding:20px;
-    font-size:18px;
+    padding:18px;
+    font-size:20px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
     cursor:pointer;
     transition:0.2s;
+    font-weight:bold;
 }
 
 button:hover{
     transform:scale(1.05);
-    opacity:0.9;
+}
+
+button:active{
+    transform:scale(0.95);
 }
 
 .operateur{
@@ -84,7 +97,7 @@ button:hover{
 }
 
 .clear{
-    background:red;
+    background:#e63946;
     color:white;
 }
 
@@ -99,11 +112,10 @@ button:hover{
     margin-top:20px;
     background:#1e1e2f;
     padding:10px;
-    border-radius:10px;
+    border-radius:12px;
     max-height:150px;
     overflow-y:auto;
     color:white;
-    transition:0.3s;
 }
 
 body.clair .historique{
@@ -117,13 +129,27 @@ body.clair .historique{
 }
 
 .ligne{
-    padding:5px;
+    padding:8px;
     border-bottom:1px solid #444;
     font-size:16px;
+    word-break:break-word;
 }
 
 body.clair .ligne{
     border-bottom:1px solid #bbb;
+}
+
+@media(max-width:500px){
+
+    button{
+        padding:15px;
+        font-size:18px;
+    }
+
+    .ecran{
+        font-size:24px;
+    }
+
 }
 
 </style>
@@ -135,7 +161,7 @@ body.clair .ligne{
 <div class="calculatrice">
 
     <button class="mode" onclick="changerMode()">
-        Mode Clair / Sombre
+        🌙 Mode Clair / Sombre
     </button>
 
     <input type="text" id="ecran" class="ecran" disabled>
@@ -145,17 +171,17 @@ body.clair .ligne{
         <button onclick="ajouter('7')">7</button>
         <button onclick="ajouter('8')">8</button>
         <button onclick="ajouter('9')">9</button>
-        <button class="operateur" onclick="ajouter('/')">/</button>
+        <button class="operateur" onclick="ajouter('/')">÷</button>
 
         <button onclick="ajouter('4')">4</button>
         <button onclick="ajouter('5')">5</button>
         <button onclick="ajouter('6')">6</button>
-        <button class="operateur" onclick="ajouter('*')">*</button>
+        <button class="operateur" onclick="ajouter('*')">×</button>
 
         <button onclick="ajouter('1')">1</button>
         <button onclick="ajouter('2')">2</button>
         <button onclick="ajouter('3')">3</button>
-        <button class="operateur" onclick="ajouter('-')">-</button>
+        <button class="operateur" onclick="ajouter('-')">−</button>
 
         <button onclick="ajouter('0')">0</button>
         <button onclick="ajouter('.')">.</button>
@@ -180,39 +206,78 @@ body.clair .ligne{
 <script>
 
 let ecran = document.getElementById("ecran");
+
 let historique = document.getElementById("listeHistorique");
 
+let operateurs = ["+", "-", "*", "/"];
+
 function ajouter(val){
+
+    let dernier = ecran.value.slice(-1);
+
+    // empêcher deux opérateurs à la suite
+    if(
+        operateurs.includes(dernier) &&
+        operateurs.includes(val)
+    ){
+        return;
+    }
+
+    // empêcher plusieurs points dans un nombre
+    if(val == "."){
+
+        let parties = ecran.value.split(/[\+\-\*\/]/);
+
+        let dernierNombre = parties[parties.length - 1];
+
+        if(dernierNombre.includes(".")){
+            return;
+        }
+
+    }
+
     ecran.value += val;
+
 }
 
 function effacer(){
+
     ecran.value = "";
+
 }
 
 function supprimer(){
+
     ecran.value = ecran.value.slice(0, -1);
+
 }
 
 function calculer(){
 
     try{
 
+        if(ecran.value == ""){
+            return;
+        }
+
         let expression = ecran.value;
 
         let resultat = eval(expression);
 
+        // empêcher Infinity
+        if(!isFinite(resultat)){
+            throw Error();
+        }
+
+        resultat = Number(resultat.toFixed(8));
+
         ecran.value = resultat;
 
-        let ligne = document.createElement("div");
+        ajouterHistorique(expression, resultat);
 
-        ligne.classList.add("ligne");
+    }
 
-        ligne.innerHTML = expression + " = " + resultat;
-
-        historique.prepend(ligne);
-
-    }catch{
+    catch{
 
         ecran.value = "Erreur";
 
@@ -220,8 +285,22 @@ function calculer(){
 
 }
 
+function ajouterHistorique(expression, resultat){
+
+    let ligne = document.createElement("div");
+
+    ligne.classList.add("ligne");
+
+    ligne.innerHTML = expression + " = " + resultat;
+
+    historique.prepend(ligne);
+
+}
+
 function changerMode(){
+
     document.body.classList.toggle("clair");
+
 }
 
 document.addEventListener("keydown", function(event){
@@ -230,25 +309,30 @@ document.addEventListener("keydown", function(event){
 
     if(
         (touche >= "0" && touche <= "9") ||
-        touche == "+" ||
-        touche == "-" ||
-        touche == "*" ||
-        touche == "/" ||
+        operateurs.includes(touche) ||
         touche == "."
     ){
+
         ajouter(touche);
+
     }
 
     else if(touche == "Enter"){
+
         calculer();
+
     }
 
     else if(touche == "Backspace"){
+
         supprimer();
+
     }
 
     else if(touche == "Delete"){
+
         effacer();
+
     }
 
 });
