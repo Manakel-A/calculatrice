@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculatrice Scientifique</title>
+<title>Calculatrice Scientifique Pro</title>
 
 <style>
 
@@ -30,7 +30,7 @@ body.clair{
 
 .calculatrice{
     width:100%;
-    max-width:420px;
+    max-width:430px;
     background:#2c2c3e;
     padding:20px;
     border-radius:20px;
@@ -68,8 +68,8 @@ body.clair .ecran{
 }
 
 button{
-    padding:16px;
-    font-size:18px;
+    padding:15px;
+    font-size:17px;
     border:none;
     border-radius:12px;
     cursor:pointer;
@@ -113,12 +113,17 @@ button:active{
     color:black;
 }
 
+.memoire{
+    background:#0984e3;
+    color:white;
+}
+
 .historique{
     margin-top:20px;
     background:#1e1e2f;
     padding:10px;
     border-radius:12px;
-    max-height:150px;
+    max-height:180px;
     overflow-y:auto;
     color:white;
 }
@@ -134,21 +139,40 @@ body.clair .historique{
 }
 
 .ligne{
-    padding:8px;
+    padding:10px;
     border-bottom:1px solid #444;
-    font-size:16px;
+    font-size:15px;
     word-break:break-word;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.ligne:hover{
+    background:rgba(255,255,255,0.1);
 }
 
 body.clair .ligne{
     border-bottom:1px solid #bbb;
 }
 
+.infos{
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-size:14px;
+    color:white;
+}
+
+body.clair .infos{
+    color:black;
+}
+
 @media(max-width:500px){
 
     button{
-        padding:13px;
-        font-size:16px;
+        padding:12px;
+        font-size:15px;
     }
 
     .ecran{
@@ -180,44 +204,70 @@ body.clair .ligne{
         <button class="science" onclick="logarithme()">log</button>
         <button class="science" onclick="puissance()">x²</button>
 
-        <button class="operateur" onclick="pourcentage()">%</button>
-        <button class="operateur" onclick="racine()">√</button>
-        <button class="science" onclick="ajouter('(')">(</button>
-        <button class="science" onclick="ajouter(')')">)</button>
+        <!-- Mémoire -->
+        <button class="memoire" onclick="memoirePlus()">M+</button>
+        <button class="memoire" onclick="memoireMoins()">M-</button>
+        <button class="memoire" onclick="memoireAfficher()">MR</button>
+        <button class="memoire" onclick="memoireEffacer()">MC</button>
         <button class="science" onclick="factorielle()">x!</button>
 
+        <!-- Ligne -->
+        <button class="operateur" onclick="pourcentage()">%</button>
+        <button class="operateur" onclick="racine()">√</button>
+        <button onclick="ajouter('(')">(</button>
+        <button onclick="ajouter(')')">)</button>
+        <button class="science" onclick="inverse()">1/x</button>
+
+        <!-- Ligne -->
         <button onclick="ajouter('7')">7</button>
         <button onclick="ajouter('8')">8</button>
         <button onclick="ajouter('9')">9</button>
         <button class="operateur" onclick="ajouter('/')">÷</button>
-        <button class="science" onclick="inverse()">1/x</button>
+        <button onclick="ajouter('3.14159265359')">π</button>
 
+        <!-- Ligne -->
         <button onclick="ajouter('4')">4</button>
         <button onclick="ajouter('5')">5</button>
         <button onclick="ajouter('6')">6</button>
         <button class="operateur" onclick="ajouter('*')">×</button>
-        <button class="science" onclick="ajouter('3.14159265359')">π</button>
+        <button onclick="ajouter('2.718281828')">e</button>
 
+        <!-- Ligne -->
         <button onclick="ajouter('1')">1</button>
         <button onclick="ajouter('2')">2</button>
         <button onclick="ajouter('3')">3</button>
         <button class="operateur" onclick="ajouter('-')">−</button>
-        <button class="science" onclick="ajouter('2.718281828')">e</button>
+        <button class="science" onclick="cube()">x³</button>
 
+        <!-- Ligne -->
         <button onclick="ajouter('0')">0</button>
         <button onclick="ajouter('.')">.</button>
         <button class="operateur" onclick="ajouter('+')">+</button>
         <button onclick="supprimer()">⌫</button>
-        <button class="science" onclick="cube()">x³</button>
+        <button class="science" onclick="ajouter('**')">xʸ</button>
 
+        <!-- Bas -->
         <button class="clear" onclick="effacer()">C</button>
         <button class="equal" onclick="calculer()">=</button>
 
     </div>
 
+    <div class="infos">
+
+        <span>
+            Mémoire :
+            <span id="memoireValeur">0</span>
+        </span>
+
+        <button class="clear" onclick="viderHistorique()">
+            Vider historique
+        </button>
+
+    </div>
+
     <div class="historique">
 
-        <h3>Historique</h3>
+        <h3>Historique intelligent</h3>
 
         <div id="listeHistorique"></div>
 
@@ -231,7 +281,13 @@ let ecran = document.getElementById("ecran");
 
 let historique = document.getElementById("listeHistorique");
 
+let memoireTexte = document.getElementById("memoireValeur");
+
 let operateurs = ["+", "-", "*", "/"];
+
+let memoire = 0;
+
+chargerHistorique();
 
 function ajouter(val){
 
@@ -260,7 +316,7 @@ function ajouter(val){
 
 }
 
-function pourcentage(){
+function calculer(){
 
     try{
 
@@ -268,9 +324,124 @@ function pourcentage(){
             return;
         }
 
+        let expression = ecran.value;
+
+        let resultat = eval(expression);
+
+        if(!isFinite(resultat)){
+            throw Error();
+        }
+
+        resultat = Number(resultat.toFixed(8));
+
+        ecran.value = resultat;
+
+        ajouterHistorique(expression, resultat);
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function ajouterHistorique(expression, resultat){
+
+    let ligne = document.createElement("div");
+
+    ligne.classList.add("ligne");
+
+    let date = new Date();
+
+    let heure =
+        date.getHours().toString().padStart(2,"0")
+        + ":" +
+        date.getMinutes().toString().padStart(2,"0");
+
+    ligne.innerHTML =
+        "🕒 " + heure +
+        "<br>" +
+        expression +
+        " = " +
+        resultat;
+
+    ligne.onclick = function(){
+
+        ecran.value = resultat;
+
+    };
+
+    historique.prepend(ligne);
+
+    sauvegarderHistorique();
+
+}
+
+function sauvegarderHistorique(){
+
+    localStorage.setItem(
+        "historiqueCalculatrice",
+        historique.innerHTML
+    );
+
+}
+
+function chargerHistorique(){
+
+    let donnees = localStorage.getItem(
+        "historiqueCalculatrice"
+    );
+
+    if(donnees){
+
+        historique.innerHTML = donnees;
+
+        let lignes =
+            historique.querySelectorAll(".ligne");
+
+        lignes.forEach(function(ligne){
+
+            ligne.onclick = function(){
+
+                let texte = ligne.innerText;
+
+                let parties = texte.split("=");
+
+                let resultat =
+                    parties[1].trim();
+
+                ecran.value = resultat;
+
+            };
+
+        });
+
+    }
+
+}
+
+function viderHistorique(){
+
+    historique.innerHTML = "";
+
+    localStorage.removeItem(
+        "historiqueCalculatrice"
+    );
+
+}
+
+function pourcentage(){
+
+    try{
+
         let valeur = eval(ecran.value);
 
         let resultat = valeur / 100;
+
+        resultat = Number(resultat.toFixed(8));
 
         ajouterHistorique(
             valeur + "%",
@@ -292,10 +463,6 @@ function pourcentage(){
 function racine(){
 
     try{
-
-        if(ecran.value == ""){
-            return;
-        }
 
         let valeur = eval(ecran.value);
 
@@ -324,125 +491,13 @@ function racine(){
 
 }
 
-function sinus(){
-
-    try{
-
-        let valeur = eval(ecran.value);
-
-        let resultat = Math.sin(valeur * Math.PI / 180);
-
-        resultat = Number(resultat.toFixed(8));
-
-        ajouterHistorique(
-            "sin(" + valeur + ")",
-            resultat
-        );
-
-        ecran.value = resultat;
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
-function cosinus(){
-
-    try{
-
-        let valeur = eval(ecran.value);
-
-        let resultat = Math.cos(valeur * Math.PI / 180);
-
-        resultat = Number(resultat.toFixed(8));
-
-        ajouterHistorique(
-            "cos(" + valeur + ")",
-            resultat
-        );
-
-        ecran.value = resultat;
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
-function tangente(){
-
-    try{
-
-        let valeur = eval(ecran.value);
-
-        let resultat = Math.tan(valeur * Math.PI / 180);
-
-        resultat = Number(resultat.toFixed(8));
-
-        ajouterHistorique(
-            "tan(" + valeur + ")",
-            resultat
-        );
-
-        ecran.value = resultat;
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
-function logarithme(){
-
-    try{
-
-        let valeur = eval(ecran.value);
-
-        if(valeur <= 0){
-            throw Error();
-        }
-
-        let resultat = Math.log10(valeur);
-
-        resultat = Number(resultat.toFixed(8));
-
-        ajouterHistorique(
-            "log(" + valeur + ")",
-            resultat
-        );
-
-        ecran.value = resultat;
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
 function puissance(){
 
     try{
 
         let valeur = eval(ecran.value);
 
-        let resultat = Math.pow(valeur, 2);
+        let resultat = Math.pow(valeur,2);
 
         ajouterHistorique(
             valeur + "²",
@@ -467,7 +522,7 @@ function cube(){
 
         let valeur = eval(ecran.value);
 
-        let resultat = Math.pow(valeur, 3);
+        let resultat = Math.pow(valeur,3);
 
         ajouterHistorique(
             valeur + "³",
@@ -517,13 +572,129 @@ function inverse(){
 
 }
 
+function logarithme(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        if(valeur <= 0){
+            throw Error();
+        }
+
+        let resultat = Math.log10(valeur);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "log(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function sinus(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat =
+            Math.sin(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "sin(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function cosinus(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat =
+            Math.cos(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "cos(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
+function tangente(){
+
+    try{
+
+        let valeur = eval(ecran.value);
+
+        let resultat =
+            Math.tan(valeur * Math.PI / 180);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ajouterHistorique(
+            "tan(" + valeur + ")",
+            resultat
+        );
+
+        ecran.value = resultat;
+
+    }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
+}
+
 function factorielle(){
 
     try{
 
         let valeur = eval(ecran.value);
 
-        if(valeur < 0 || !Number.isInteger(valeur)){
+        if(valeur < 0 ||
+            !Number.isInteger(valeur)){
             throw Error();
         }
 
@@ -552,6 +723,54 @@ function factorielle(){
 
 }
 
+function memoirePlus(){
+
+    try{
+
+        memoire += eval(ecran.value || 0);
+
+        actualiserMemoire();
+
+    }
+
+    catch{}
+
+}
+
+function memoireMoins(){
+
+    try{
+
+        memoire -= eval(ecran.value || 0);
+
+        actualiserMemoire();
+
+    }
+
+    catch{}
+
+}
+
+function memoireAfficher(){
+
+    ecran.value = memoire;
+
+}
+
+function memoireEffacer(){
+
+    memoire = 0;
+
+    actualiserMemoire();
+
+}
+
+function actualiserMemoire(){
+
+    memoireTexte.innerText = memoire;
+
+}
+
 function effacer(){
 
     ecran.value = "";
@@ -560,51 +779,8 @@ function effacer(){
 
 function supprimer(){
 
-    ecran.value = ecran.value.slice(0, -1);
-
-}
-
-function calculer(){
-
-    try{
-
-        if(ecran.value == ""){
-            return;
-        }
-
-        let expression = ecran.value;
-
-        let resultat = eval(expression);
-
-        if(!isFinite(resultat)){
-            throw Error();
-        }
-
-        resultat = Number(resultat.toFixed(8));
-
-        ecran.value = resultat;
-
-        ajouterHistorique(expression, resultat);
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
-function ajouterHistorique(expression, resultat){
-
-    let ligne = document.createElement("div");
-
-    ligne.classList.add("ligne");
-
-    ligne.innerHTML = expression + " = " + resultat;
-
-    historique.prepend(ligne);
+    ecran.value =
+        ecran.value.slice(0, -1);
 
 }
 
