@@ -396,7 +396,7 @@ chargerHistorique();
 function ajouter(val){
 
     let dernier = ecran.value.slice(-1);
-
+    setTimeout(calculer,200);
     if(
         operateurs.includes(dernier) &&
         operateurs.includes(val)
@@ -934,4 +934,3 @@ document.addEventListener("keydown", function(event){
 
 </body>
 </html>
-// ma calculatrice et moi même 
