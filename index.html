@@ -14,14 +14,15 @@
 
 body{
     margin:0;
-    height:100vh;
+    min-height:100vh;
     display:flex;
     justify-content:center;
-    align-items:center;
+    align-items:flex-start;
     background:#1e1e2f;
     font-family:Arial, sans-serif;
     transition:0.3s;
-    padding:15px;
+    padding:20px;
+    overflow-y:auto;
 }
 
 body.clair{
@@ -31,29 +32,112 @@ body.clair{
 .calculatrice{
     width:100%;
     max-width:430px;
-    background:#2c2c3e;
+
+    background:linear-gradient(
+        145deg,
+        #2c2c3e,
+        #1a1a28
+    );
+
     padding:20px;
     border-radius:20px;
-    box-shadow:0 0 25px rgba(0,0,0,0.4);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 0 25px rgba(0,0,0,0.4);
+
     transition:0.3s;
+
+    max-height:95vh;
+    overflow-y:auto;
 }
 
 body.clair .calculatrice{
     background:white;
 }
 
+.calculatrice::-webkit-scrollbar,
+.historique::-webkit-scrollbar{
+    width:6px;
+}
+
+.calculatrice::-webkit-scrollbar-thumb,
+.historique::-webkit-scrollbar-thumb{
+    background:#19c37d;
+    border-radius:10px;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+    color:white;
+    font-size:14px;
+}
+
+body.clair .status{
+    color:black;
+}
+
+.point-vert{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#00ff66;
+
+    box-shadow:
+        0 0 5px #00ff66,
+        0 0 10px #00ff66,
+        0 0 20px #00ff66,
+        0 0 40px #00ff66;
+
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.25);
+        opacity:0.7;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
 .ecran{
     width:100%;
     height:70px;
     margin-bottom:15px;
+
     font-size:30px;
     text-align:right;
+
     padding:15px;
+
     border:none;
     border-radius:12px;
     outline:none;
+
     background:#111827;
     color:white;
+
+    position:sticky;
+    top:0;
+    z-index:10;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,0.3);
 }
 
 body.clair .ecran{
@@ -71,23 +155,42 @@ button{
     padding:15px;
     font-size:17px;
     border:none;
-    border-radius:12px;
+    border-radius:14px;
     cursor:pointer;
-    transition:0.2s;
+    transition:all 0.15s ease;
     font-weight:bold;
+
+    position:relative;
+
+    box-shadow:
+        0 6px 0 rgba(0,0,0,0.25),
+        0 10px 20px rgba(0,0,0,0.25);
+
+    transform:translateY(0);
 }
 
 button:hover{
-    transform:scale(1.05);
+    transform:translateY(-2px);
+    filter:brightness(1.08);
 }
 
 button:active{
-    transform:scale(0.95);
+    transform:translateY(4px);
+
+    box-shadow:
+        0 2px 0 rgba(0,0,0,0.25),
+        0 4px 8px rgba(0,0,0,0.2);
+
+    filter:brightness(0.9);
 }
 
 .operateur{
-    background:#19c37d;
+    background:#00c853;
     color:white;
+
+    box-shadow:
+        0 0 10px rgba(0,200,83,0.5),
+        0 0 20px rgba(0,200,83,0.3);
 }
 
 .equal{
@@ -123,8 +226,13 @@ button:active{
     background:#1e1e2f;
     padding:10px;
     border-radius:12px;
-    max-height:180px;
+
+    max-height:220px;
+    min-height:120px;
+
     overflow-y:auto;
+    scrollbar-width:thin;
+
     color:white;
 }
 
@@ -182,7 +290,6 @@ body.clair .infos{
 }
 
 </style>
-
 </head>
 
 <body>
@@ -193,60 +300,57 @@ body.clair .infos{
         🌙 Mode Clair / Sombre
     </button>
 
+    <div class="status">
+        <span class="point-vert"></span>
+        Calculatrice Active
+    </div>
+
     <input type="text" id="ecran" class="ecran" disabled>
 
     <div class="boutons">
 
-        <!-- Scientifique -->
         <button class="science" onclick="sinus()">sin</button>
         <button class="science" onclick="cosinus()">cos</button>
         <button class="science" onclick="tangente()">tan</button>
         <button class="science" onclick="logarithme()">log</button>
         <button class="science" onclick="puissance()">x²</button>
 
-        <!-- Mémoire -->
         <button class="memoire" onclick="memoirePlus()">M+</button>
         <button class="memoire" onclick="memoireMoins()">M-</button>
         <button class="memoire" onclick="memoireAfficher()">MR</button>
         <button class="memoire" onclick="memoireEffacer()">MC</button>
         <button class="science" onclick="factorielle()">x!</button>
 
-        <!-- Ligne -->
         <button class="operateur" onclick="pourcentage()">%</button>
         <button class="operateur" onclick="racine()">√</button>
         <button onclick="ajouter('(')">(</button>
         <button onclick="ajouter(')')">)</button>
         <button class="science" onclick="inverse()">1/x</button>
 
-        <!-- Ligne -->
         <button onclick="ajouter('7')">7</button>
         <button onclick="ajouter('8')">8</button>
         <button onclick="ajouter('9')">9</button>
         <button class="operateur" onclick="ajouter('/')">÷</button>
         <button onclick="ajouter('3.14159265359')">π</button>
 
-        <!-- Ligne -->
         <button onclick="ajouter('4')">4</button>
         <button onclick="ajouter('5')">5</button>
         <button onclick="ajouter('6')">6</button>
         <button class="operateur" onclick="ajouter('*')">×</button>
         <button onclick="ajouter('2.718281828')">e</button>
 
-        <!-- Ligne -->
         <button onclick="ajouter('1')">1</button>
         <button onclick="ajouter('2')">2</button>
         <button onclick="ajouter('3')">3</button>
         <button class="operateur" onclick="ajouter('-')">−</button>
         <button class="science" onclick="cube()">x³</button>
 
-        <!-- Ligne -->
         <button onclick="ajouter('0')">0</button>
         <button onclick="ajouter('.')">.</button>
         <button class="operateur" onclick="ajouter('+')">+</button>
         <button onclick="supprimer()">⌫</button>
         <button class="science" onclick="ajouter('**')">xʸ</button>
 
-        <!-- Bas -->
         <button class="clear" onclick="effacer()">C</button>
         <button class="equal" onclick="calculer()">=</button>
 
