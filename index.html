@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Calculatrice Scientifique Pro</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Calculatrice Pro</title>
 
 <style>
 
@@ -13,16 +17,23 @@
 }
 
 body{
+
     margin:0;
+
     min-height:100vh;
+
     display:flex;
+
     justify-content:center;
+
     align-items:flex-start;
+
     background:#1e1e2f;
-    font-family:Arial, sans-serif;
-    transition:0.3s;
+
+    font-family:Arial,sans-serif;
+
     padding:20px;
-    overflow-y:auto;
+
 }
 
 body.clair{
@@ -30,37 +41,66 @@ body.clair{
 }
 
 .calculatrice{
+
     width:100%;
+
     max-width:430px;
 
     background:linear-gradient(
-        145deg,
-        #2c2c3e,
-        #1a1a28
+    145deg,
+    #2c2c3e,
+    #1a1a28
     );
 
     padding:20px;
+
     border-radius:20px;
 
-    border:1px solid rgba(255,255,255,0.08);
-
     box-shadow:
-        0 0 25px rgba(0,0,0,0.4);
+    0 0 25px rgba(0,0,0,0.4);
 
-    transition:0.3s;
 }
 
 body.clair .calculatrice{
     background:white;
 }
 
-.status{
-    display:flex;
-    align-items:center;
-    gap:10px;
+.mode{
+
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:12px;
+
     margin-bottom:15px;
+
+    background:#6c5ce7;
+
     color:white;
-    font-size:14px;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+}
+
+.status{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    color:white;
+
+    margin-bottom:15px;
+
 }
 
 body.clair .status{
@@ -68,56 +108,51 @@ body.clair .status{
 }
 
 .point-vert{
+
     width:14px;
+
     height:14px;
+
     border-radius:50%;
+
     background:#00ff66;
 
     box-shadow:
-        0 0 5px #00ff66,
-        0 0 10px #00ff66,
-        0 0 20px #00ff66;
-
-    animation:pulse 1.5s infinite;
-}
-
-@keyframes pulse{
-
-    0%{
-        transform:scale(1);
-    }
-
-    50%{
-        transform:scale(1.2);
-    }
-
-    100%{
-        transform:scale(1);
-    }
+    0 0 10px #00ff66,
+    0 0 20px #00ff66;
 
 }
 
 .ecran{
-    width:100%;
-    height:70px;
-    margin-bottom:15px;
 
-    font-size:30px;
-    text-align:right;
+    width:100%;
+
+    height:70px;
+
+    border:none;
+
+    border-radius:12px;
+
+    margin-bottom:15px;
 
     padding:15px;
 
-    border:none;
-    border-radius:12px;
-    outline:none;
+    font-size:28px;
+
+    text-align:right;
 
     background:#111827;
+
     color:white;
+
 }
 
 body.clair .ecran{
+
     background:#eeeeee;
+
     color:black;
+
 }
 
 #modeCalcul{
@@ -132,41 +167,45 @@ body.clair .ecran{
 
     border-radius:12px;
 
-    font-size:16px;
-
     background:#111827;
 
     color:white;
 
+    font-size:16px;
+
 }
 
 .boutons{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+    repeat(4,1fr);
+
     gap:10px;
+
 }
 
 button{
+
     padding:15px;
-    font-size:17px;
+
     border:none;
+
     border-radius:14px;
-    cursor:pointer;
-    transition:all 0.15s ease;
+
+    font-size:16px;
+
     font-weight:bold;
 
-    box-shadow:
-        0 6px 0 rgba(0,0,0,0.25),
-        0 10px 20px rgba(0,0,0,0.25);
+    cursor:pointer;
+
+    transition:0.2s;
+
 }
 
 button:hover{
-    transform:translateY(-2px);
-    filter:brightness(1.08);
-}
-
-button:active{
-    transform:translateY(4px);
+    transform:scale(1.04);
 }
 
 .operateur{
@@ -184,95 +223,97 @@ button:active{
     color:white;
 }
 
-.mode{
-    width:100%;
-    margin-bottom:15px;
-    background:#6c5ce7;
-    color:white;
-}
-
 .science{
     background:#fdcb6e;
     color:black;
 }
 
-.memoire{
-    background:#0984e3;
-    color:white;
-}
-
 .historique{
+
     margin-top:20px;
+
     background:#1e1e2f;
+
     padding:10px;
+
     border-radius:12px;
 
-    max-height:220px;
+    max-height:200px;
+
     overflow-y:auto;
 
     color:white;
+
 }
 
 body.clair .historique{
-    background:#eeeeee;
-    color:black;
-}
 
-.historique h3{
-    text-align:center;
+    background:#eeeeee;
+
+    color:black;
+
 }
 
 .ligne{
-    padding:10px;
-    border-bottom:1px solid #444;
+
+    padding:8px;
+
+    border-bottom:1px solid #555;
+
     cursor:pointer;
+
 }
 
 .infos{
-    margin-top:10px;
+
+    margin-top:15px;
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     color:white;
+
 }
 
 body.clair .infos{
     color:black;
 }
 
-@media(max-width:500px){
-
-    button{
-        padding:12px;
-        font-size:15px;
-    }
-
-    .ecran{
-        font-size:24px;
-    }
-
-}
-
 </style>
+
 </head>
 
 <body>
 
 <div class="calculatrice">
 
-    <button class="mode" onclick="changerMode()">
+    <button class="mode"
+    onclick="changerMode()">
+
         🌙 Mode Clair / Sombre
+
     </button>
 
     <div class="status">
+
         <span class="point-vert"></span>
+
         Calculatrice Active
+
     </div>
 
-    <input type="text" id="ecran" class="ecran" disabled>
+    <input type="text"
+    id="ecran"
+    class="ecran"
+    disabled>
 
     <!-- MENU -->
-    <select id="modeCalcul" onchange="changerMenu()">
+
+    <select id="modeCalcul"
+    onchange="changerMenu()">
 
         <option value="standard">
             Standard
@@ -286,9 +327,14 @@ body.clair .infos{
             Conversions
         </option>
 
+        <option value="programmeur">
+            Programmeur
+        </option>
+
     </select>
 
     <!-- STANDARD -->
+
     <div id="standard">
 
         <div class="boutons">
@@ -296,73 +342,144 @@ body.clair .infos{
             <button onclick="ajouter('7')">7</button>
             <button onclick="ajouter('8')">8</button>
             <button onclick="ajouter('9')">9</button>
-            <button class="operateur" onclick="ajouter('/')">÷</button>
+            <button class="operateur"
+            onclick="ajouter('/')">÷</button>
 
             <button onclick="ajouter('4')">4</button>
             <button onclick="ajouter('5')">5</button>
             <button onclick="ajouter('6')">6</button>
-            <button class="operateur" onclick="ajouter('*')">×</button>
+            <button class="operateur"
+            onclick="ajouter('*')">×</button>
 
             <button onclick="ajouter('1')">1</button>
             <button onclick="ajouter('2')">2</button>
             <button onclick="ajouter('3')">3</button>
-            <button class="operateur" onclick="ajouter('-')">−</button>
+            <button class="operateur"
+            onclick="ajouter('-')">−</button>
 
             <button onclick="ajouter('0')">0</button>
             <button onclick="ajouter('.')">.</button>
-            <button class="operateur" onclick="ajouter('+')">+</button>
+            <button class="operateur"
+            onclick="ajouter('+')">+</button>
             <button onclick="supprimer()">⌫</button>
 
-            <button class="clear" onclick="effacer()">C</button>
-            <button class="equal" onclick="calculer()">=</button>
+            <button class="clear"
+            onclick="effacer()">C</button>
+
+            <button class="equal"
+            onclick="calculer()">=</button>
 
         </div>
 
     </div>
 
     <!-- SCIENTIFIQUE -->
-    <div id="scientifique" style="display:none;">
+
+    <div id="scientifique"
+    style="display:none;">
 
         <div class="boutons">
 
-            <button class="science" onclick="sinus()">sin</button>
-            <button class="science" onclick="cosinus()">cos</button>
-            <button class="science" onclick="tangente()">tan</button>
-            <button class="science" onclick="logarithme()">log</button>
+            <button class="science"
+            onclick="sinus()">sin</button>
 
-            <button class="science" onclick="puissance()">x²</button>
-            <button class="science" onclick="cube()">x³</button>
-            <button class="science" onclick="racine()">√</button>
-            <button class="science" onclick="factorielle()">x!</button>
+            <button class="science"
+            onclick="cosinus()">cos</button>
 
-            <button class="science" onclick="inverse()">1/x</button>
-            <button onclick="ajouter('(')">(</button>
-            <button onclick="ajouter(')')">)</button>
-            <button onclick="ajouter('3.14159265359')">π</button>
+            <button class="science"
+            onclick="tangente()">tan</button>
+
+            <button class="science"
+            onclick="logarithme()">log</button>
+
+            <button class="science"
+            onclick="puissance()">x²</button>
+
+            <button class="science"
+            onclick="cube()">x³</button>
+
+            <button class="science"
+            onclick="racine()">√</button>
+
+            <button class="science"
+            onclick="factorielle()">x!</button>
 
         </div>
 
     </div>
 
     <!-- CONVERSION -->
-    <div id="conversion" style="display:none;">
+
+    <div id="conversion"
+    style="display:none;">
 
         <div class="boutons">
 
-            <button class="science" onclick="kmToM()">
+            <button class="science"
+            onclick="kmToM()">
+
                 km → m
+
             </button>
 
-            <button class="science" onclick="mToKm()">
+            <button class="science"
+            onclick="mToKm()">
+
                 m → km
+
             </button>
 
-            <button class="science" onclick="cToF()">
+            <button class="science"
+            onclick="cToF()">
+
                 °C → °F
+
             </button>
 
-            <button class="science" onclick="fToC()">
+            <button class="science"
+            onclick="fToC()">
+
                 °F → °C
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- PROGRAMMEUR -->
+
+    <div id="programmeur"
+    style="display:none;">
+
+        <div class="boutons">
+
+            <button class="science"
+            onclick="toBinary()">
+
+                BIN
+
+            </button>
+
+            <button class="science"
+            onclick="toHex()">
+
+                HEX
+
+            </button>
+
+            <button class="science"
+            onclick="toOctal()">
+
+                OCT
+
+            </button>
+
+            <button class="science"
+            onclick="toDecimal()">
+
+                DEC
+
             </button>
 
         </div>
@@ -372,19 +489,30 @@ body.clair .infos{
     <div class="infos">
 
         <span>
+
             Mémoire :
-            <span id="memoireValeur">0</span>
+            <span id="memoireValeur">
+
+                0
+
+            </span>
+
         </span>
 
-        <button class="clear" onclick="viderHistorique()">
+        <button class="clear"
+        onclick="viderHistorique()">
+
             Vider historique
+
         </button>
 
     </div>
 
     <div class="historique">
 
-        <h3>Historique intelligent</h3>
+        <h3>
+            Historique intelligent
+        </h3>
 
         <div id="listeHistorique"></div>
 
@@ -394,22 +522,19 @@ body.clair .infos{
 
 <script>
 
-let ecran = document.getElementById("ecran");
+let ecran =
+document.getElementById(
+"ecran"
+);
 
-let historique = document.getElementById("listeHistorique");
-
-let memoireTexte = document.getElementById("memoireValeur");
-
-let memoire = 0;
+let historique =
+document.getElementById(
+"listeHistorique"
+);
 
 chargerHistorique();
 
 function changerMenu(){
-
-    let mode =
-    document.getElementById(
-    "modeCalcul"
-    ).value;
 
     document.getElementById(
     "standard"
@@ -422,6 +547,15 @@ function changerMenu(){
     document.getElementById(
     "conversion"
     ).style.display = "none";
+
+    document.getElementById(
+    "programmeur"
+    ).style.display = "none";
+
+    let mode =
+    document.getElementById(
+    "modeCalcul"
+    ).value;
 
     document.getElementById(
     mode
@@ -439,17 +573,20 @@ function calculer(){
 
     try{
 
-        let expression = ecran.value;
+        let expression =
+        ecran.value;
 
-        let resultat = eval(expression);
+        let resultat =
+        eval(expression);
 
-        resultat = Number(resultat.toFixed(8));
+        resultat =
+        Number(resultat.toFixed(8));
 
         ecran.value = resultat;
 
         ajouterHistorique(
-            expression,
-            resultat
+        expression,
+        resultat
         );
 
     }
@@ -462,18 +599,26 @@ function calculer(){
 
 }
 
-function ajouterHistorique(expression, resultat){
+function ajouterHistorique(
+expression,
+resultat
+){
 
-    let ligne = document.createElement("div");
+    let ligne =
+    document.createElement("div");
 
     ligne.classList.add("ligne");
 
     ligne.innerHTML =
-    expression + " = " + resultat;
+    expression +
+    " = " +
+    resultat;
 
-    ligne.onclick = function(){
+    ligne.onclick =
+    function(){
 
-        ecran.value = resultat;
+        ecran.value =
+        resultat;
 
     };
 
@@ -486,8 +631,8 @@ function ajouterHistorique(expression, resultat){
 function sauvegarderHistorique(){
 
     localStorage.setItem(
-        "historiqueCalculatrice",
-        historique.innerHTML
+    "historiqueCalculatrice",
+    historique.innerHTML
     );
 
 }
@@ -501,7 +646,8 @@ function chargerHistorique(){
 
     if(donnees){
 
-        historique.innerHTML = donnees;
+        historique.innerHTML =
+        donnees;
 
     }
 
@@ -512,7 +658,7 @@ function viderHistorique(){
     historique.innerHTML = "";
 
     localStorage.removeItem(
-        "historiqueCalculatrice"
+    "historiqueCalculatrice"
     );
 
 }
@@ -521,7 +667,8 @@ function sinus(){
 
     ecran.value =
     Math.sin(
-    ecran.value * Math.PI / 180
+    ecran.value *
+    Math.PI / 180
     ).toFixed(8);
 
 }
@@ -530,7 +677,8 @@ function cosinus(){
 
     ecran.value =
     Math.cos(
-    ecran.value * Math.PI / 180
+    ecran.value *
+    Math.PI / 180
     ).toFixed(8);
 
 }
@@ -539,7 +687,8 @@ function tangente(){
 
     ecran.value =
     Math.tan(
-    ecran.value * Math.PI / 180
+    ecran.value *
+    Math.PI / 180
     ).toFixed(8);
 
 }
@@ -556,28 +705,36 @@ function logarithme(){
 function puissance(){
 
     ecran.value =
-    Math.pow(ecran.value,2);
+    Math.pow(
+    ecran.value,
+    2
+    );
 
 }
 
 function cube(){
 
     ecran.value =
-    Math.pow(ecran.value,3);
+    Math.pow(
+    ecran.value,
+    3
+    );
 
 }
 
 function racine(){
 
     ecran.value =
-    Math.sqrt(ecran.value)
-    .toFixed(8);
+    Math.sqrt(
+    ecran.value
+    ).toFixed(8);
 
 }
 
 function factorielle(){
 
-    let n = Number(ecran.value);
+    let n =
+    Number(ecran.value);
 
     let resultat = 1;
 
@@ -588,14 +745,6 @@ function factorielle(){
     }
 
     ecran.value = resultat;
-
-}
-
-function inverse(){
-
-    ecran.value =
-    (1 / ecran.value)
-    .toFixed(8);
 
 }
 
@@ -625,8 +774,53 @@ function cToF(){
 function fToC(){
 
     ecran.value =
-    ((ecran.value - 32) / 1.8)
-    .toFixed(2);
+    ((ecran.value - 32)
+    / 1.8).toFixed(2);
+
+}
+
+/* PROGRAMMEUR */
+
+function toBinary(){
+
+    let nombre =
+    parseInt(ecran.value);
+
+    ecran.value =
+    nombre.toString(2);
+
+}
+
+function toHex(){
+
+    let nombre =
+    parseInt(ecran.value);
+
+    ecran.value =
+    nombre.toString(16)
+    .toUpperCase();
+
+}
+
+function toOctal(){
+
+    let nombre =
+    parseInt(ecran.value);
+
+    ecran.value =
+    nombre.toString(8);
+
+}
+
+function toDecimal(){
+
+    let nombre =
+    parseInt(
+    ecran.value,
+    2
+    );
+
+    ecran.value = nombre;
 
 }
 
@@ -654,4 +848,5 @@ function changerMode(){
 </script>
 
 </body>
+
 </html>
