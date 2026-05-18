@@ -732,70 +732,50 @@ function racine(){
 }
 
 function factorielle(){
-
     let n =
     Number(ecran.value);
-
     let resultat = 1;
-
     for(let i=1;i<=n;i++){
-
         resultat *= i;
-
     }
-
     ecran.value = resultat;
-
 }
 
 /* CONVERSIONS */
 
 function kmToM(){
-
     ecran.value =
     ecran.value * 1000;
-
 }
 
 function mToKm(){
-
     ecran.value =
     ecran.value / 1000;
-
 }
 
 function cToF(){
-
     ecran.value =
     (ecran.value * 1.8) + 32;
-
 }
 
 function fToC(){
-
     ecran.value =
     ((ecran.value - 32)
     / 1.8).toFixed(2);
-
 }
 
 /* PROGRAMMEUR */
 
 function toBinary(){
-
     let nombre =
     parseInt(ecran.value);
-
     ecran.value =
     nombre.toString(2);
-
 }
 
 function toHex(){
-
     let nombre =
     parseInt(ecran.value);
-
     ecran.value =
     nombre.toString(16)
     .toUpperCase();
@@ -803,50 +783,36 @@ function toHex(){
 }
 
 function toOctal(){
-
     let nombre =
     parseInt(ecran.value);
-
     ecran.value =
     nombre.toString(8);
-
 }
 
 function toDecimal(){
-
     let nombre =
     parseInt(
     ecran.value,
     2
     );
-
     ecran.value = nombre;
-
 }
 
 function effacer(){
-
     ecran.value = "";
-
 }
 
 function supprimer(){
-
     ecran.value =
     ecran.value.slice(0,-1);
-
 }
 
 function changerMode(){
-
     document.body.classList.toggle(
     "clair"
     );
 
 }
-
 </script>
-
 </body>
-
 </html>
