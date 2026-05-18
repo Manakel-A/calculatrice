@@ -8,8 +8,6 @@
 
 <style>
 
-/* ===== TON CSS INCHANGÉ ===== */
-
 *{
     box-sizing:border-box;
 }
@@ -50,31 +48,210 @@ body.clair{
         0 0 25px rgba(0,0,0,0.4);
 
     transition:0.3s;
-
-    max-height:95vh;
-    overflow-y:auto;
 }
 
-/* ===== RESTE CSS IDENTIQUE ===== */
+body.clair .calculatrice{
+    background:white;
+}
+
+.status{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:15px;
+    color:white;
+    font-size:14px;
+}
+
+body.clair .status{
+    color:black;
+}
+
+.point-vert{
+    width:14px;
+    height:14px;
+    border-radius:50%;
+    background:#00ff66;
+
+    box-shadow:
+        0 0 5px #00ff66,
+        0 0 10px #00ff66,
+        0 0 20px #00ff66;
+
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+
+    0%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.2);
+    }
+
+    100%{
+        transform:scale(1);
+    }
+
+}
 
 .ecran{
     width:100%;
     height:70px;
     margin-bottom:15px;
+
     font-size:30px;
     text-align:right;
+
     padding:15px;
+
     border:none;
     border-radius:12px;
     outline:none;
+
     background:#111827;
     color:white;
-    position:sticky;
-    top:0;
-    z-index:10;
 }
 
-/* ... tout ton CSS reste identique ... */
+body.clair .ecran{
+    background:#eeeeee;
+    color:black;
+}
+
+#modeCalcul{
+
+    width:100%;
+
+    padding:12px;
+
+    margin-bottom:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    font-size:16px;
+
+    background:#111827;
+
+    color:white;
+
+}
+
+.boutons{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+button{
+    padding:15px;
+    font-size:17px;
+    border:none;
+    border-radius:14px;
+    cursor:pointer;
+    transition:all 0.15s ease;
+    font-weight:bold;
+
+    box-shadow:
+        0 6px 0 rgba(0,0,0,0.25),
+        0 10px 20px rgba(0,0,0,0.25);
+}
+
+button:hover{
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+}
+
+button:active{
+    transform:translateY(4px);
+}
+
+.operateur{
+    background:#00c853;
+    color:white;
+}
+
+.equal{
+    background:#00b894;
+    color:white;
+}
+
+.clear{
+    background:#e63946;
+    color:white;
+}
+
+.mode{
+    width:100%;
+    margin-bottom:15px;
+    background:#6c5ce7;
+    color:white;
+}
+
+.science{
+    background:#fdcb6e;
+    color:black;
+}
+
+.memoire{
+    background:#0984e3;
+    color:white;
+}
+
+.historique{
+    margin-top:20px;
+    background:#1e1e2f;
+    padding:10px;
+    border-radius:12px;
+
+    max-height:220px;
+    overflow-y:auto;
+
+    color:white;
+}
+
+body.clair .historique{
+    background:#eeeeee;
+    color:black;
+}
+
+.historique h3{
+    text-align:center;
+}
+
+.ligne{
+    padding:10px;
+    border-bottom:1px solid #444;
+    cursor:pointer;
+}
+
+.infos{
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+}
+
+body.clair .infos{
+    color:black;
+}
+
+@media(max-width:500px){
+
+    button{
+        padding:12px;
+        font-size:15px;
+    }
+
+    .ecran{
+        font-size:24px;
+    }
+
+}
 
 </style>
 </head>
@@ -84,7 +261,7 @@ body.clair{
 <div class="calculatrice">
 
     <button class="mode" onclick="changerMode()">
-        Mode Clair / Sombre
+        🌙 Mode Clair / Sombre
     </button>
 
     <div class="status">
@@ -94,38 +271,122 @@ body.clair{
 
     <input type="text" id="ecran" class="ecran" disabled>
 
-    <!-- ⭐ NOUVEAUX BOUTONS CONVERTISSEUR SIMPLE -->
-    <div class="boutons">
+    <!-- MENU -->
+    <select id="modeCalcul" onchange="changerMenu()">
 
-        <button class="science" onclick="kmToM()">km → m</button>
-        <button class="science" onclick="mToKm()">m → km</button>
-        <button class="science" onclick="cToF()">°C → °F</button>
-        <button class="science" onclick="fToC()">°F → °C</button>
+        <option value="standard">
+            Standard
+        </option>
+
+        <option value="scientifique">
+            Scientifique
+        </option>
+
+        <option value="conversion">
+            Conversions
+        </option>
+
+    </select>
+
+    <!-- STANDARD -->
+    <div id="standard">
+
+        <div class="boutons">
+
+            <button onclick="ajouter('7')">7</button>
+            <button onclick="ajouter('8')">8</button>
+            <button onclick="ajouter('9')">9</button>
+            <button class="operateur" onclick="ajouter('/')">÷</button>
+
+            <button onclick="ajouter('4')">4</button>
+            <button onclick="ajouter('5')">5</button>
+            <button onclick="ajouter('6')">6</button>
+            <button class="operateur" onclick="ajouter('*')">×</button>
+
+            <button onclick="ajouter('1')">1</button>
+            <button onclick="ajouter('2')">2</button>
+            <button onclick="ajouter('3')">3</button>
+            <button class="operateur" onclick="ajouter('-')">−</button>
+
+            <button onclick="ajouter('0')">0</button>
+            <button onclick="ajouter('.')">.</button>
+            <button class="operateur" onclick="ajouter('+')">+</button>
+            <button onclick="supprimer()">⌫</button>
+
+            <button class="clear" onclick="effacer()">C</button>
+            <button class="equal" onclick="calculer()">=</button>
+
+        </div>
 
     </div>
 
-    <!-- ===== TES BOUTONS EXISTANTS ===== -->
-    <div class="boutons">
+    <!-- SCIENTIFIQUE -->
+    <div id="scientifique" style="display:none;">
 
-        <button onclick="ajouter('7')">7</button>
-        <button onclick="ajouter('8')">8</button>
-        <button onclick="ajouter('9')">9</button>
-        <button onclick="ajouter('/')">÷</button>
+        <div class="boutons">
 
-        <button onclick="ajouter('4')">4</button>
-        <button onclick="ajouter('5')">5</button>
-        <button onclick="ajouter('6')">6</button>
-        <button onclick="ajouter('*')">×</button>
+            <button class="science" onclick="sinus()">sin</button>
+            <button class="science" onclick="cosinus()">cos</button>
+            <button class="science" onclick="tangente()">tan</button>
+            <button class="science" onclick="logarithme()">log</button>
 
-        <button onclick="ajouter('1')">1</button>
-        <button onclick="ajouter('2')">2</button>
-        <button onclick="ajouter('3')">3</button>
-        <button onclick="ajouter('-')">−</button>
+            <button class="science" onclick="puissance()">x²</button>
+            <button class="science" onclick="cube()">x³</button>
+            <button class="science" onclick="racine()">√</button>
+            <button class="science" onclick="factorielle()">x!</button>
 
-        <button onclick="ajouter('0')">0</button>
-        <button onclick="ajouter('.')">.</button>
-        <button onclick="ajouter('+')">+</button>
-        <button onclick="calculer()">=</button>
+            <button class="science" onclick="inverse()">1/x</button>
+            <button onclick="ajouter('(')">(</button>
+            <button onclick="ajouter(')')">)</button>
+            <button onclick="ajouter('3.14159265359')">π</button>
+
+        </div>
+
+    </div>
+
+    <!-- CONVERSION -->
+    <div id="conversion" style="display:none;">
+
+        <div class="boutons">
+
+            <button class="science" onclick="kmToM()">
+                km → m
+            </button>
+
+            <button class="science" onclick="mToKm()">
+                m → km
+            </button>
+
+            <button class="science" onclick="cToF()">
+                °C → °F
+            </button>
+
+            <button class="science" onclick="fToC()">
+                °F → °C
+            </button>
+
+        </div>
+
+    </div>
+
+    <div class="infos">
+
+        <span>
+            Mémoire :
+            <span id="memoireValeur">0</span>
+        </span>
+
+        <button class="clear" onclick="viderHistorique()">
+            Vider historique
+        </button>
+
+    </div>
+
+    <div class="historique">
+
+        <h3>Historique intelligent</h3>
+
+        <div id="listeHistorique"></div>
 
     </div>
 
@@ -135,48 +396,259 @@ body.clair{
 
 let ecran = document.getElementById("ecran");
 
-/* ===== TES FONCTIONS EXISTANTES INCHANGÉES ===== */
+let historique = document.getElementById("listeHistorique");
+
+let memoireTexte = document.getElementById("memoireValeur");
+
+let memoire = 0;
+
+chargerHistorique();
+
+function changerMenu(){
+
+    let mode =
+    document.getElementById(
+    "modeCalcul"
+    ).value;
+
+    document.getElementById(
+    "standard"
+    ).style.display = "none";
+
+    document.getElementById(
+    "scientifique"
+    ).style.display = "none";
+
+    document.getElementById(
+    "conversion"
+    ).style.display = "none";
+
+    document.getElementById(
+    mode
+    ).style.display = "block";
+
+}
 
 function ajouter(val){
+
     ecran.value += val;
+
 }
 
 function calculer(){
+
     try{
-        ecran.value = eval(ecran.value);
-    }catch{
-        ecran.value = "Erreur";
+
+        let expression = ecran.value;
+
+        let resultat = eval(expression);
+
+        resultat = Number(resultat.toFixed(8));
+
+        ecran.value = resultat;
+
+        ajouterHistorique(
+            expression,
+            resultat
+        );
+
     }
+
+    catch{
+
+        ecran.value = "Erreur";
+
+    }
+
 }
 
-/* ===== ⭐ CONVERTISSEURS SIMPLES AJOUTÉS ===== */
+function ajouterHistorique(expression, resultat){
+
+    let ligne = document.createElement("div");
+
+    ligne.classList.add("ligne");
+
+    ligne.innerHTML =
+    expression + " = " + resultat;
+
+    ligne.onclick = function(){
+
+        ecran.value = resultat;
+
+    };
+
+    historique.prepend(ligne);
+
+    sauvegarderHistorique();
+
+}
+
+function sauvegarderHistorique(){
+
+    localStorage.setItem(
+        "historiqueCalculatrice",
+        historique.innerHTML
+    );
+
+}
+
+function chargerHistorique(){
+
+    let donnees =
+    localStorage.getItem(
+    "historiqueCalculatrice"
+    );
+
+    if(donnees){
+
+        historique.innerHTML = donnees;
+
+    }
+
+}
+
+function viderHistorique(){
+
+    historique.innerHTML = "";
+
+    localStorage.removeItem(
+        "historiqueCalculatrice"
+    );
+
+}
+
+function sinus(){
+
+    ecran.value =
+    Math.sin(
+    ecran.value * Math.PI / 180
+    ).toFixed(8);
+
+}
+
+function cosinus(){
+
+    ecran.value =
+    Math.cos(
+    ecran.value * Math.PI / 180
+    ).toFixed(8);
+
+}
+
+function tangente(){
+
+    ecran.value =
+    Math.tan(
+    ecran.value * Math.PI / 180
+    ).toFixed(8);
+
+}
+
+function logarithme(){
+
+    ecran.value =
+    Math.log10(
+    ecran.value
+    ).toFixed(8);
+
+}
+
+function puissance(){
+
+    ecran.value =
+    Math.pow(ecran.value,2);
+
+}
+
+function cube(){
+
+    ecran.value =
+    Math.pow(ecran.value,3);
+
+}
+
+function racine(){
+
+    ecran.value =
+    Math.sqrt(ecran.value)
+    .toFixed(8);
+
+}
+
+function factorielle(){
+
+    let n = Number(ecran.value);
+
+    let resultat = 1;
+
+    for(let i=1;i<=n;i++){
+
+        resultat *= i;
+
+    }
+
+    ecran.value = resultat;
+
+}
+
+function inverse(){
+
+    ecran.value =
+    (1 / ecran.value)
+    .toFixed(8);
+
+}
+
+/* CONVERSIONS */
 
 function kmToM(){
-    ecran.value = ecran.value * 1000;
+
+    ecran.value =
+    ecran.value * 1000;
+
 }
 
 function mToKm(){
-    ecran.value = ecran.value / 1000;
+
+    ecran.value =
+    ecran.value / 1000;
+
 }
 
 function cToF(){
-    ecran.value = (ecran.value * 1.8) + 32;
+
+    ecran.value =
+    (ecran.value * 1.8) + 32;
+
 }
 
 function fToC(){
-    ecran.value = (ecran.value - 32) / 1.8;
+
+    ecran.value =
+    ((ecran.value - 32) / 1.8)
+    .toFixed(2);
+
 }
 
 function effacer(){
+
     ecran.value = "";
+
 }
 
 function supprimer(){
-    ecran.value = ecran.value.slice(0, -1);
+
+    ecran.value =
+    ecran.value.slice(0,-1);
+
 }
 
 function changerMode(){
-    document.body.classList.toggle("clair");
+
+    document.body.classList.toggle(
+    "clair"
+    );
+
 }
 
 </script>
