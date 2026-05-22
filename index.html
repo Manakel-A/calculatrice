@@ -1,911 +1,223 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Calculatrice Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculatrice Pro+</title>
 
 <style>
-
-*{
-    box-sizing:border-box;
-}
-
 body{
-
     margin:0;
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:flex-start;
-
+    font-family:Arial;
     background:#1e1e2f;
-
-    font-family:Arial,sans-serif;
-
+    display:flex;
+    justify-content:center;
     padding:20px;
-
-}
-
-body.clair{
-    background:#f4f4f4;
+    color:white;
 }
 
 .calculatrice{
-
     width:100%;
-
-    max-width:430px;
-
-    background:linear-gradient(
-    145deg,
-    #2c2c3e,
-    #1a1a28
-    );
-
+    max-width:450px;
+    background:#2c2c3e;
     padding:20px;
-
     border-radius:20px;
-
-    box-shadow:
-    0 0 25px rgba(0,0,0,0.4);
-
-}
-
-body.clair .calculatrice{
-    background:white;
-}
-
-.mode{
-
-    width:100%;
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:12px;
-
-    margin-bottom:15px;
-
-    background:#6c5ce7;
-
-    color:white;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-}
-
-.status{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
-    color:white;
-
-    margin-bottom:15px;
-
-}
-
-body.clair .status{
-    color:black;
-}
-
-.point-vert{
-
-    width:14px;
-
-    height:14px;
-
-    border-radius:50%;
-
-    background:#00ff66;
-
-    box-shadow:
-    0 0 10px #00ff66,
-    0 0 20px #00ff66;
-
 }
 
 .ecran{
-
     width:100%;
-
-    height:70px;
-
-    border:none;
-
-    border-radius:12px;
-
-    margin-bottom:15px;
-
+    font-size:26px;
     padding:15px;
-
-    font-size:28px;
-
-    text-align:right;
-
-    background:#111827;
-
-    color:white;
-
-}
-
-body.clair .ecran{
-
-    background:#eeeeee;
-
-    color:black;
-
-}
-
-#modeCalcul{
-
-    width:100%;
-
-    padding:12px;
-
-    margin-bottom:15px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#111827;
-
-    color:white;
-
-    font-size:16px;
-
-}
-
-.boutons{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(4,1fr);
-
-    gap:10px;
-
     margin-bottom:10px;
-
+    border-radius:10px;
+    border:none;
+    text-align:right;
 }
 
 button{
-
-    padding:15px;
-
+    padding:12px;
     border:none;
-
-    border-radius:14px;
-
-    font-size:16px;
-
+    border-radius:10px;
+    cursor:pointer;
     font-weight:bold;
-
-    cursor:pointer;
-
-    transition:0.2s;
-
 }
 
-button:hover{
-    transform:scale(1.04);
+.grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
 }
 
-.operateur{
-    background:#00c853;
-    color:white;
-}
+.op{background:#00c853;color:white;}
+.eq{background:#00b894;color:white;}
+.clear{background:#e74c3c;color:white;}
+.sc{background:#f1c40f;color:black;}
 
-.equal{
-    background:#00b894;
-    color:white;
-}
-
-.clear{
-    background:#e63946;
-    color:white;
-}
-
-.science{
-    background:#fdcb6e;
-    color:black;
-}
-
-.historique{
-
-    margin-top:20px;
-
-    background:#1e1e2f;
-
-    padding:10px;
-
-    border-radius:12px;
-
-    max-height:200px;
-
-    overflow-y:auto;
-
-    color:white;
-
-}
-
-body.clair .historique{
-
-    background:#eeeeee;
-
-    color:black;
-
-}
-
-.ligne{
-
-    padding:8px;
-
-    border-bottom:1px solid #555;
-
-    cursor:pointer;
-
-}
-
-.infos{
-
-    margin-top:15px;
-
+.small{
     display:flex;
-
     justify-content:space-between;
-
-    align-items:center;
-
-    color:white;
-
+    margin:10px 0;
+    font-size:14px;
 }
-
-body.clair .infos{
-    color:black;
-}
-
 </style>
-
 </head>
 
 <body>
 
 <div class="calculatrice">
 
-    <button class="mode"
-    onclick="changerMode()">
-
-        🌙 Mode Clair / Sombre
-
-    </button>
-
-    <div class="status">
-
-        <span class="point-vert"></span>
-
-        Calculatrice Active
-
-    </div>
-
-    <input type="text"
-    id="ecran"
-    class="ecran"
-    disabled>
-
-    <!-- MENU -->
-
-    <select id="modeCalcul"
-    onchange="changerMenu()">
-
-        <option value="standard">
-            Standard
-        </option>
-
-        <option value="scientifique">
-            Scientifique
-        </option>
-
-        <option value="conversion">
-            Conversions
-        </option>
-
-        <option value="programmeur">
-            Programmeur
-        </option>
-
-    </select>
-
-    <!-- STANDARD -->
-
-    <div id="standard">
-
-        <div class="boutons">
-
-            <button onclick="ajouter('7')">7</button>
-            <button onclick="ajouter('8')">8</button>
-            <button onclick="ajouter('9')">9</button>
-            <button class="operateur"
-            onclick="ajouter('/')">÷</button>
-
-            <button onclick="ajouter('4')">4</button>
-            <button onclick="ajouter('5')">5</button>
-            <button onclick="ajouter('6')">6</button>
-            <button class="operateur"
-            onclick="ajouter('*')">×</button>
-
-            <button onclick="ajouter('1')">1</button>
-            <button onclick="ajouter('2')">2</button>
-            <button onclick="ajouter('3')">3</button>
-            <button class="operateur"
-            onclick="ajouter('-')">−</button>
-
-            <button onclick="ajouter('0')">0</button>
-            <button onclick="ajouter('.')">.</button>
-            <button class="operateur"
-            onclick="ajouter('+')">+</button>
-            <button onclick="supprimer()">⌫</button>
-
-            <button class="clear"
-            onclick="effacer()">C</button>
-
-            <button class="equal"
-            onclick="calculer()">=</button>
-
-        </div>
-
-    </div>
-
-    <!-- SCIENTIFIQUE -->
-
-    <div id="scientifique"
-    style="display:none;">
-
-        <div class="boutons">
-
-            <button class="science"
-            onclick="sinus()">sin</button>
-
-            <button class="science"
-            onclick="cosinus()">cos</button>
-
-            <button class="science"
-            onclick="tangente()">tan</button>
-
-            <button class="science"
-            onclick="logarithme()">log</button>
-
-            <button class="science"
-            onclick="puissance()">x²</button>
-
-            <button class="science"
-            onclick="cube()">x³</button>
-
-            <button class="science"
-            onclick="racine()">√</button>
-
-            <button class="science"
-            onclick="factorielle()">x!</button>
-
-        </div>
-
-    </div>
-
-    <!-- CONVERSION -->
-
-    <div id="conversion"
-    style="display:none;">
-
-        <div class="boutons">
-
-            <button class="science"
-            onclick="kmToM()">
-
-                km → m
-
-            </button>
-
-            <button class="science"
-            onclick="mToKm()">
-
-                m → km
-
-            </button>
-
-            <button class="science"
-            onclick="cToF()">
-
-                °C → °F
-
-            </button>
-
-            <button class="science"
-            onclick="fToC()">
-
-                °F → °C
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- PROGRAMMEUR -->
-
-    <div id="programmeur"
-    style="display:none;">
-
-        <div class="boutons">
-
-            <button class="science"
-            onclick="toBinary()">
-
-                BIN
-
-            </button>
-
-            <button class="science"
-            onclick="toHex()">
-
-                HEX
-
-            </button>
-
-            <button class="science"
-            onclick="toOctal()">
-
-                OCT
-
-            </button>
-
-            <button class="science"
-            onclick="toDecimal()">
-
-                DEC
-
-            </button>
-
-        </div>
-
-    </div>
-
-    <!-- MEMOIRE -->
-
-    <div class="boutons">
-
-        <button class="science"
-        onclick="memoirePlus()">
-
-            M+
-
-        </button>
-
-        <button class="science"
-        onclick="memoireMoins()">
-
-            M-
-
-        </button>
-
-        <button class="science"
-        onclick="memoireRecall()">
-
-            MR
-
-        </button>
-
-        <button class="clear"
-        onclick="memoireClear()">
-
-            MC
-
-        </button>
-
-    </div>
-
-    <div class="infos">
-
-        <span>
-
-            Mémoire :
-            <span id="memoireValeur">
-
-                0
-
-            </span>
-
-        </span>
-
-        <button class="clear"
-        onclick="viderHistorique()">
-
-            Vider historique
-
-        </button>
-
-    </div>
-
-    <div class="historique">
-
-        <h3>
-            Historique intelligent
-        </h3>
-
-        <div id="listeHistorique"></div>
-
-    </div>
+<input id="ecran" class="ecran" disabled>
+
+<div class="small">
+<button onclick="toggleAngle()">Mode: <span id="modeAngle">DEG</span></button>
+<button onclick="clearAll()" class="clear">C</button>
+</div>
+
+<div class="grid">
+
+<button onclick="ajouter('7')">7</button>
+<button onclick="ajouter('8')">8</button>
+<button onclick="ajouter('9')">9</button>
+<button onclick="ajouter('/')">÷</button>
+
+<button onclick="ajouter('4')">4</button>
+<button onclick="ajouter('5')">5</button>
+<button onclick="ajouter('6')">6</button>
+<button onclick="ajouter('*')">×</button>
+
+<button onclick="ajouter('1')">1</button>
+<button onclick="ajouter('2')">2</button>
+<button onclick="ajouter('3')">3</button>
+<button onclick="ajouter('-')">−</button>
+
+<button onclick="ajouter('0')">0</button>
+<button onclick="ajouter('.')">.</button>
+<button onclick="ajouter('+')">+</button>
+<button onclick="backspace()">⌫</button>
+
+<button onclick="ajouter('(')">(</button>
+<button onclick="ajouter(')')">)</button>
+<button onclick="ajouter('Math.PI')">π</button>
+<button onclick="ajouter('Math.E')">e</button>
+
+<button class="sc" onclick="sin()">sin</button>
+<button class="sc" onclick="cos()">cos</button>
+<button class="sc" onclick="tan()">tan</button>
+<button class="eq" onclick="calculer()">=</button>
+
+</div>
+
+<h3>Historique</h3>
+<div id="history"></div>
 
 </div>
 
 <script>
 
-let ecran =
-document.getElementById(
-"ecran"
-);
+let ecran = document.getElementById("ecran");
+let historyDiv = document.getElementById("history");
 
-let historique =
-document.getElementById(
-"listeHistorique"
-);
+let history = JSON.parse(localStorage.getItem("calcHistory") || "[]");
 
-chargerHistorique();
+let angleMode = "DEG";
 
-let memoire = 0;
-
-function changerMenu(){
-
-    document.getElementById(
-    "standard"
-    ).style.display = "none";
-
-    document.getElementById(
-    "scientifique"
-    ).style.display = "none";
-
-    document.getElementById(
-    "conversion"
-    ).style.display = "none";
-
-    document.getElementById(
-    "programmeur"
-    ).style.display = "none";
-
-    let mode =
-    document.getElementById(
-    "modeCalcul"
-    ).value;
-
-    document.getElementById(
-    mode
-    ).style.display = "block";
-
+function ajouter(v){
+    ecran.value += v;
 }
 
-function ajouter(val){
-
-    ecran.value += val;
-
+function backspace(){
+    ecran.value = ecran.value.slice(0,-1);
 }
 
-function calculer(){
-
-    try{
-
-        let expression =
-        ecran.value;
-
-        let resultat =
-        eval(expression);
-
-        resultat =
-        Number(resultat.toFixed(8));
-
-        ecran.value = resultat;
-
-        ajouterHistorique(
-        expression,
-        resultat
-        );
-
-    }
-
-    catch{
-
-        ecran.value = "Erreur";
-
-    }
-
-}
-
-function ajouterHistorique(
-expression,
-resultat
-){
-
-    let ligne =
-    document.createElement("div");
-
-    ligne.classList.add("ligne");
-
-    ligne.innerHTML =
-    expression +
-    " = " +
-    resultat;
-
-    ligne.onclick =
-    function(){
-
-        ecran.value =
-        resultat;
-
-    };
-
-    historique.prepend(ligne);
-
-    sauvegarderHistorique();
-
-}
-
-function sauvegarderHistorique(){
-
-    localStorage.setItem(
-    "historiqueCalculatrice",
-    historique.innerHTML
-    );
-
-}
-
-function chargerHistorique(){
-
-    let donnees =
-    localStorage.getItem(
-    "historiqueCalculatrice"
-    );
-
-    if(donnees){
-
-        historique.innerHTML =
-        donnees;
-
-    }
-
-}
-
-function viderHistorique(){
-
-    historique.innerHTML = "";
-
-    localStorage.removeItem(
-    "historiqueCalculatrice"
-    );
-
-}
-
-function sinus(){
-
-    ecran.value =
-    Math.sin(
-    ecran.value *
-    Math.PI / 180
-    ).toFixed(8);
-
-}
-
-function cosinus(){
-
-    ecran.value =
-    Math.cos(
-    ecran.value *
-    Math.PI / 180
-    ).toFixed(8);
-
-}
-
-function tangente(){
-
-    ecran.value =
-    Math.tan(
-    ecran.value *
-    Math.PI / 180
-    ).toFixed(8);
-
-}
-
-function logarithme(){
-
-    ecran.value =
-    Math.log10(
-    ecran.value
-    ).toFixed(8);
-
-}
-
-function puissance(){
-
-    ecran.value =
-    Math.pow(
-    ecran.value,
-    2
-    );
-
-}
-
-function cube(){
-
-    ecran.value =
-    Math.pow(
-    ecran.value,
-    3
-    );
-
-}
-
-function racine(){
-
-    ecran.value =
-    Math.sqrt(
-    ecran.value
-    ).toFixed(8);
-
-}
-
-function factorielle(){
-
-    let n =
-    Number(ecran.value);
-
-    let resultat = 1;
-
-    for(let i=1;i<=n;i++){
-
-        resultat *= i;
-    }
-
-    ecran.value = resultat;
-}
-
-/* CONVERSIONS */
-
-function kmToM(){
-
-    ecran.value =
-    ecran.value * 1000;
-}
-
-function mToKm(){
-
-    ecran.value =
-    ecran.value / 1000;
-}
-
-function cToF(){
-
-    ecran.value =
-    (ecran.value * 1.8) + 32;
-}
-
-function fToC(){
-
-    ecran.value =
-    ((ecran.value - 32)
-    / 1.8).toFixed(2);
-}
-
-/* PROGRAMMEUR */
-
-function toBinary(){
-
-    let nombre =
-    parseInt(ecran.value);
-
-    ecran.value =
-    nombre.toString(2);
-}
-
-function toHex(){
-
-    let nombre =
-    parseInt(ecran.value);
-
-    ecran.value =
-    nombre.toString(16)
-    .toUpperCase();
-
-}
-
-function toOctal(){
-
-    let nombre =
-    parseInt(ecran.value);
-
-    ecran.value =
-    nombre.toString(8);
-}
-
-function toDecimal(){
-
-    let nombre =
-    parseInt(
-    ecran.value,
-    2
-    );
-
-    ecran.value = nombre;
-}
-
-/* MEMOIRE */
-
-function memoirePlus(){
-
-    memoire += Number(ecran.value || 0);
-
-    updateMemoire();
-}
-
-function memoireMoins(){
-
-    memoire -= Number(ecran.value || 0);
-
-    updateMemoire();
-}
-
-function memoireRecall(){
-
-    ecran.value = memoire;
-}
-
-function memoireClear(){
-
-    memoire = 0;
-
-    updateMemoire();
-}
-
-function updateMemoire(){
-
-    document.getElementById(
-    "memoireValeur"
-    ).innerText = memoire;
-}
-
-function effacer(){
-
+function clearAll(){
     ecran.value = "";
 }
 
-function supprimer(){
-
-    ecran.value =
-    ecran.value.slice(0,-1);
+function toggleAngle(){
+    angleMode = angleMode === "DEG" ? "RAD" : "DEG";
+    document.getElementById("modeAngle").innerText = angleMode;
 }
 
-function changerMode(){
-
-    document.body.classList.toggle(
-    "clair"
-    );
-
+/* ---------- SAFE EVAL ---------- */
+function safeEval(expr){
+    try{
+        return Function("return " + expr)();
+    }catch{
+        return "Erreur";
+    }
 }
+
+/* ---------- TRIGO ---------- */
+function toRad(x){
+    return angleMode === "DEG" ? x * Math.PI / 180 : x;
+}
+
+function sin(){
+    ecran.value = Math.sin(toRad(Number(ecran.value)));
+}
+function cos(){
+    ecran.value = Math.cos(toRad(Number(ecran.value)));
+}
+function tan(){
+    ecran.value = Math.tan(toRad(Number(ecran.value)));
+}
+
+/* ---------- CALCUL ---------- */
+function calculer(){
+
+    let expr = ecran.value;
+
+    let result = safeEval(expr);
+
+    if(result === "Erreur"){
+        ecran.value = "Erreur";
+        return;
+    }
+
+    ecran.value = result;
+
+    history.unshift({
+        expression: expr,
+        result: result,
+        date: new Date().toLocaleTimeString()
+    });
+
+    localStorage.setItem("calcHistory", JSON.stringify(history));
+
+    renderHistory();
+}
+
+/* ---------- HISTORIQUE ---------- */
+function renderHistory(){
+    historyDiv.innerHTML = "";
+
+    history.forEach(h => {
+        let div = document.createElement("div");
+        div.style.padding = "5px";
+        div.style.borderBottom = "1px solid #444";
+        div.innerText = `${h.expression} = ${h.result}`;
+        div.onclick = () => ecran.value = h.result;
+        historyDiv.appendChild(div);
+    });
+}
+
+renderHistory();
+
+/* ---------- KEYBOARD ---------- */
+document.addEventListener("keydown", (e)=>{
+
+    if(!isNaN(e.key) || "+-*/().".includes(e.key)){
+        ajouter(e.key);
+    }
+
+    if(e.key === "Enter"){
+        calculer();
+    }
+
+    if(e.key === "Backspace"){
+        backspace();
+    }
+});
 
 </script>
 
